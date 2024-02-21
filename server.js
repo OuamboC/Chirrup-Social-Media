@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 
+
 const app = express();
 app.use(cors());
 
@@ -29,10 +30,18 @@ app.get('/', (req, res, next) => {
 
 // Other API endpoints: Links go here...
 // You can uncomment the below four lines as you implement the functionality - we'll discuss this structure in week three.
-// require('./app/routes/user.server.routes')(app);
-// require('./app/routes/social.server.routes')(app);
-// require('./app/routes/post.server.routes')(app);
-// require('./app/routes/feed.server.routes')(app);
+
+//Link the 'user.server.routes' to the main application which is server.js
+require('./app/routes/user.server.routes')(app);
+
+//Link the 'social.server.routes' to the main application which is server.js
+ require('./app/routes/social.server.routes')(app);
+
+//Link the 'post.server.routes' to the main application which is server.js
+ require('./app/routes/post.server.routes')(app);
+
+//Link the 'feed.server.routes' to the main application which is server.js
+ require('./app/routes/feed.server.routes')(app);
 
 
 // Default response for any other request
