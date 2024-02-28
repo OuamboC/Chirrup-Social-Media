@@ -1,24 +1,60 @@
-# Chirrup Starter Code
+# Chirrup Backend Development
 
-**For the full-stack web development assignment 23/24**
+**My full-stack web development assignment 23/24 -Semester 1**
+                                           **Regarding the Backend Development of Chirrup social Media**
 
-Steps to download and run:
-1. Make sure you have NodeJS installed on your machine ([Download NodeJS](https://nodejs.org/en/download/))
-2. Make sure you have Git installed on your machine ([Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
-2. In your terminal, navigate to the directory where you want to download the project
-3. Run `git clone https://github.com/ash-williams/fsd_chirrup_server`
-4. Once the project has finished downloading, navigate into the projects root directory `cd fsd_chirrup_server`
-5. Run `npm install` to install all dependencies for the project
-6. Once the dependencies have installed, run the server using `npm run dev`. You will see a message saying that the server is running on port 3333.
-7. In a **separate terminal window** navigate to the projects root directory and run `npm run test` to run the tests. The tests will mostly fail, but that is because we have not yet written any code.
 
-Once you have completed the above, you are set up and ready to begin work on the assignment.
 
-**Things to remember:**
-1. To re-run the tests, you can first wipe the DB by running `npm run wipe`. The tests assume a fresh database each time.
-2. The tests may have mistakes too, check your work manually (using Postman). If you're not sure, ask.
-3. The API documentation is located on Swagger [here](https://app.swaggerhub.com/apis/MMU-SE/Chirrup/1.0.0/#/)
 
-If you have any issues, come see me in the labs.
 
-Ash
+**Overview**
+This repository documents the development of the backend for Chirrup, a social media platform, as part of my full-stack web development assignment during Semester 1.+++
+
+Assignment Setup
+1.Installed NodeJS on my machine. ([Download NodeJS](https://nodejs.org/en/download/))
+2.Installed Git on my machine.  ([Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
+3.Cloned the starter code provided by my Unit Leader, Ash Williams, using the command: git clone https://github.com/ash-williams/fsd_chirrup_server
+4.Navigated to the project's root directory in the terminal: cd fsd_chirrup_server
+5.Installed all project dependencies: npm install
+6.Started the server using: npm run dev. The server runs on port 3333.
+7.Ran tests in a separate terminal window using: npm run test. The tests mostly fail due to the absence of written code.
+8.Before re-running tests, wiped the database by executing: npm run wipe.
+9.Referenced the API documentation located on Swagger [here](https://app.swaggerhub.com/apis/MMU-SE/Chirrup/1.0.0/#/)
+
+**Development Process**
+
+1.Established a structured directory layout within the app directory, organizing routes, models, and controllers.
+2.Created four route files (feed.server.routes.js, post.server.routes.js, social.server.routes.js, user.server.routes.js) within the routes directory.
+3.Implemented endpoints specified in the route files within corresponding controller files.
+4.Imported different controllers and called functions for each endpoint implementation.
+5.Created four controller files (feed.server.controllers.js, post.server.controllers.js, social.server.controllers.js, user.server.controllers.js) within the controller directory.
+6.Defined functions in each controller file for handling business logic.
+7.Exported functions from controller files for access by other components.
+9.Linked route files to the main application (server.js) using require statements.
+10.Created model files (feed.server.models.js, post.server.models.js, social.server.models.js, user.server.models.js) within the model directory.
+11.Implemented functions within model files for interacting with the database.
+12.Imported database file at the top of model files.
+13.Utilized callback functions to manage asynchronous database interactions effectively.
+14.Exported functions from model files for access by controllers.
+15.Imported model files into respective controllers for accessing functions.
+16.Implemented authentication functionalities within model functions.
+17.Created a middleware function for authentication in the lib directory.
+18.Imported the middleware function into route files and applied it to endpoints requiring authentication.
+19.Utilized Postman for testing API endpoints.
+20.Incorporated the "bad-words" dependency for profanity filtering.
+
+**This development process ensures a structured and modular backend architecture for Chirrup, facilitating scalability, maintainability, and extensibility.**
+
+
+Canis Ouambo
+
+
+
+
+
+
+
+
+
+
+
