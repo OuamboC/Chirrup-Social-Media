@@ -1,7 +1,5 @@
-# Chirrup Backend Development
-
-**My full-stack web development assignment 23/24 -Semester 1**
-                                           **Regarding the Backend Development of Chirrup social Media**
+**My full-stack web development assignment 23/24 -Semester 1** ------- **Chirrup social-Media Backend Development**
+                                           
 
 
 
