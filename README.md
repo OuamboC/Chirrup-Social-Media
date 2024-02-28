@@ -10,10 +10,14 @@
 **Overview**
 This repository documents the development of the backend for Chirrup, a social media platform, as part of my full-stack web development assignment during Semester 1.+++
 
-Assignment Setup
+**Assignment Setup**
+
 1.Installed NodeJS on my machine. ([Download NodeJS](https://nodejs.org/en/download/))
+
 2.Installed Git on my machine.  ([Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
+
 3.Cloned the starter code provided by my Unit Leader, Ash Williams, using the command: git clone https://github.com/ash-williams/fsd_chirrup_server
+
 4.Navigated to the project's root directory in the terminal: cd fsd_chirrup_server
 5.Installed all project dependencies: npm install
 6.Started the server using: npm run dev. The server runs on port 3333.
