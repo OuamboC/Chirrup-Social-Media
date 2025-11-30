@@ -13,7 +13,7 @@ const postusers = (first_name, last_name, username, password) => {
             })
         })
         .then(response => {
-            if (response.status === 200) {
+            if (response.status === 200 || response.status === 201) {
                 return response.json();
             } else if (response.status === 400) {
                 throw 'Bad request';
@@ -22,7 +22,12 @@ const postusers = (first_name, last_name, username, password) => {
             }
         })
         .then(rJson => {
+            console.log('📝 SignUp response:', rJson);
+            if (!rJson.user_id) {
+                console.error('❌ Backend did not return user_id! Response:', rJson);
+            }
             localStorage.setItem("user_id", rJson.user_id);
+            console.log('💾 Saved to localStorage - user_id:', rJson.user_id);
             return rJson
         })
         .catch(err => {
@@ -53,8 +58,13 @@ const login = (username, password) => {
             }
         })
         .then(rJson => {
+            console.log('🔐 Login response:', rJson);
+            if (!rJson.user_id) {
+                console.error('❌ Backend did not return user_id! Response:', rJson);
+            }
             localStorage.setItem("user_id", rJson.user_id);
             localStorage.setItem("session_token", rJson.session_token);
+            console.log('💾 Saved to localStorage - user_id:', rJson.user_id);
             return rJson
         })
         .catch(err => {

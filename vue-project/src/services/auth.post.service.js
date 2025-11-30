@@ -23,7 +23,8 @@ const postPosts =(text) => {
             }
         })
         .then(rJson => {
-            localStorage.setItem("user_id", rJson.user_id);
+            console.log('✅ Post created:', rJson);
+            // Don't overwrite user_id - it should stay from login!
             return rJson
         })
         .catch(err => {
@@ -59,7 +60,6 @@ const updatePosts = (post_id, text) => {
         }
     })
         .then(rJson => {
-            localStorage.setItem("user_id", rJson.user_id);
             return rJson
         })
         .catch(err => {
@@ -90,7 +90,6 @@ const deletePosts = (post_id) => {
             }
         })
         .then(rJson => {
-            localStorage.setItem("user_id", rJson.user_id);
             return rJson
         })
         .catch(err => {
@@ -122,7 +121,6 @@ const likePosts = (post_id) => {
             }
         })
         .then(rJson => {
-            localStorage.setItem("user_id", rJson.user_id);
             return rJson
         })
         .catch(err => {
@@ -154,7 +152,6 @@ const unlikePosts = (post_id) => {
             }
         })
         .then(rJson => {
-            localStorage.setItem("user_id", rJson.user_id);
             return rJson
         })
         .catch(err => {

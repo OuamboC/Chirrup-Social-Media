@@ -19,7 +19,6 @@ const postFollowUser = ( user_id) => {
             }
         })
         .then(rJson => {
-            localStorage.setItem("user_id", rJson.user_id);
             return rJson
         })
         .catch(err => {
@@ -49,7 +48,6 @@ const deleteFollowUser = ( user_id) => {
             }
         })
         .then(rJson => {
-            localStorage.setItem("user_id", rJson.user_id);
             return rJson
         })
         .catch(err => {

@@ -1,190 +1,165 @@
-# My full-stack web development assignment 23/24 -Semester 1 
+# Chirrup - Social Media Platform
 
-# Overview
+A full-stack social media platform built with Vue.js and Node.js, featuring real-time interactions, user authentication, and content management.
 
-This repository documents the development of both the frontend and backend for Chirrup, a social media platform, as part of my full-stack web development assignment during Semester 1.
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Node](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg)
+![Vue](https://img.shields.io/badge/vue-3.x-green.svg)
 
-# Chirrup social-Media FrontEnd Development
+## 🚀 Features
 
-**Setup of Vue.js App**
+- **User Authentication** - Secure registration and login system
+- **Social Feed** - View and interact with posts from other users
+- **Post Management** - Create, update, and delete your own posts
+- **Social Interactions** - Like/unlike posts, follow/unfollow users
+- **User Profiles** - View detailed user profiles and activity
+- **Search Functionality** - Find users by username
+- **Profanity Filter** - Automated content moderation using bad-words library
 
-1.Created a new directory for the frontend app separate from the backend.
+## 🛠️ Tech Stack
 
-2.Initialized the Vue app in the terminal using **'npm init vue@latest'**.
+**Frontend:**
 
-3.Installed dependencies and ran the development server.
+- Vue.js 3 with Composition API
+- Vue Router for navigation
+- Axios for API requests
 
-4.Removed starter templating code, assets, and components from the template directory **'(src)'**.
+**Backend:**
 
-5.Modified **' main.js'** to remove CSS imports.
+- Node.js with Express.js
+- SQLite database
+- JWT authentication
+- Mocha for automated testing
 
-**Development Process**
+## 📋 Prerequisites
 
-1.Added Vue Router by installing **'vue-router'**.
-2.Created a router directory **'(src/router)'** with an **'index.js'** file.
-3.Defined route paths and components in the router file.
-4.Imported and configured the router in **'main.js'**.
-5.Used **'<router-view />'** for component rendering and **'<router-link />'** for navigation.
-6.Organized project structure with directories like **'views'** (pages), **'components'**, **'router'**, and **'services'**.
-7.Implemented service files (**'auth.post.service.js'** , **'auth.service.js'**, **'auth.social.service.js'**, **'posts.service.js'**, **'user.service.js'**) for managing API requests.
-8.Implemented functionality for both non-authenticated and authenticated users, including viewing posts, creating an account, logging in, getting user details, searching for users, updating and deleting posts, following/unfollowing users, liking/unliking posts.
+- Node.js (v14 or higher)
+- npm or yarn
 
-**Installation**
+## ⚡ Quick Start
 
-To run this Vue.js application locally, follow these steps:
+### Backend Setup
 
-1.Clone this repository:
+1. Clone the repository:
 
+```bash
 git clone https://github.com/OuamboC/Chirrup-Social-Media.git
+cd Chirrup-Social-Media
+```
 
-2.Navigate into the project directory:
+2. Install backend dependencies:
 
-cd Chirrup-Social-Media/vue-project
-
-3.Install dependencies:
-
+```bash
 npm install
+```
 
-4.Run the development server:
+3. Start the backend server:
 
-npm run server
+```bash
+npm run dev
+```
 
-5.Once the development server is running, you will receive a URL to access the application. Typically, it's **'http://localhost:8080/'**, but it may vary depending on your environment.
+The server will run on `http://localhost:3333`
 
-6.Open the provided URL in your web browser to view the Chirrup Social Media application.
+4. (Optional) Run tests:
 
+```bash
+npm run test
+```
 
-**Technologies Used**
+### Frontend Setup
 
-- Vue.js
-  
--Vue Router 
+1. Navigate to the Vue project:
 
-**Project Structure**
+```bash
+cd vue-project
+```
 
-- /src
-   - /router: Contains Vue Router configuration.
-   - /views: Vue.js views or pages.
-   - /components: Reusable Vue components.
-   - /services: Files for managing API requests.
+2. Install frontend dependencies:
 
-**Usage**
+```bash
+npm install
+```
 
-**Non-Authenticated Users**
+3. Start the development server:
 
-1.**View Posts**: Non-authenticated users can browse and view all posts made by other users.
+```bash
+npm run dev
+```
 
-2.**Create an Account**: They have the option to create a new account to access additional features.
+4. Open your browser and visit the URL provided (typically `http://localhost:5173`)
 
-3.**Log In**: After creating an account, users can log in to access personalized content and features.
+## 📁 Project Structure
 
-4.**Get User Details**: Users can retrieve details of a single user, such as their profile information and posts.
+```
+Chirrup-Social-Media/
+├── app/
+│   ├── controllers/     # Request handlers
+│   ├── models/          # Database interactions
+│   ├── routes/          # API endpoints
+│   └── lib/            # Middleware (authentication)
+├── vue-project/
+│   ├── src/
+│   │   ├── components/  # Reusable Vue components
+│   │   ├── views/       # Page components
+│   │   ├── services/    # API service layer
+│   │   └── router/      # Route definitions
+│   └── public/          # Static assets
+├── tests/              # Automated test suite
+└── database.js         # Database configuration
+```
 
-5.**Search for Users**: They have the ability to search for specific users by username.
+## 🔑 API Endpoints
 
-6.**View Single Post**: Users can view detailed information about a single post.
+### Authentication
 
-**Authenticated Users**
+- `POST /api/register` - Create new account
+- `POST /api/login` - User login
 
-In addition to the above functionalities, authenticated users gain access to the following features:
+### Posts
 
-1.**Log Out**: Authenticated users can log out of their accounts to secure their session.
+- `GET /api/feed` - Get all posts
+- `POST /api/posts` - Create new post (authenticated)
+- `PATCH /api/posts/:id` - Update post (authenticated)
+- `DELETE /api/posts/:id` - Delete post (authenticated)
 
-2.**Follow Other Users**: Users can choose to follow other users to stay updated with their posts.
+### Social
 
-3.**Stop Following Users**: They have the option to unfollow users if they no longer wish to see their posts.
+- `POST /api/users/:id/follow` - Follow user (authenticated)
+- `DELETE /api/users/:id/follow` - Unfollow user (authenticated)
+- `POST /api/posts/:id/like` - Like post (authenticated)
+- `DELETE /api/posts/:id/like` - Unlike post (authenticated)
 
-4.**Update Their Post**: Authenticated users can edit and update their own posts as needed.
+### Users
 
-5.**Delete Their Post**: They have the ability to delete their own posts from the platform.
+- `GET /api/users` - Search users
+- `GET /api/users/:id` - Get user profile
 
-6.**Like Posts**: Users can like posts made by other users to show appreciation or agreement.
+## 🧪 Testing
 
-7.**Unlike Posts**: They can also remove their likes from posts if they change their opinion.
+Run the automated test suite:
 
-These functionalities provide users with a seamless and interactive experience on the Chirrup social media platform, catering to both non-authenticated and authenticated users' needs.
+```bash
+npm run test
+```
 
+To reset the database before testing:
 
+```bash
+npm run wipe
+```
 
- 
-                                           
+## 📝 License
 
-# Chirrup social-Media BackEnd Development
+This project is licensed under the MIT License.
 
+## 👤 Author
 
+**Canis Ouambo**
 
-**Assignment Setup**
+- GitHub: [@OuamboC](https://github.com/OuamboC)
+- LinkedIn: [canis-ouambo](https://www.linkedin.com/in/canis-breal-ouambo/)
 
-1.Installed NodeJS on my machine. ([Download NodeJS](https://nodejs.org/en/download/))
+## 🙏 Acknowledgments
 
-2.Installed Git on my machine.  ([Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
-
-3.Cloned the starter code provided by my Unit Leader, Ash Williams, using the command: git clone https://github.com/ash-williams/fsd_chirrup_server
-
-4.Navigated to the project's root directory in the terminal: cd fsd_chirrup_server
-
-5.Installed all project dependencies: npm install
-
-6.Started the server using: npm run dev. The server runs on port 3333.
-
-7.Ran tests in a separate terminal window using: npm run test. The tests mostly fail due to the absence of written code.
-
-8.Before re-running tests, wiped the database by executing: npm run wipe.
-
-9.Referenced the API documentation located on Swagger [here](https://app.swaggerhub.com/apis/MMU-SE/Chirrup/1.0.0/#/)
-
-**Development Process**
-
-1.Established a structured directory layout within the app directory, organizing routes, models, and controllers.
-
-2.Created four route files (**feed.server.routes.js**, **post.server.routes.js**, **social.server.routes.js**, **user.server.routes.js**) within the routes directory.
-
-3.Implemented endpoints specified in the route files within corresponding controller files.
-
-4.Imported different controllers and called functions for each endpoint implementation.
-
-5.Created four controller files (**feed.server.controllers.js**, **post.server.controllers.js**, **social.server.controllers.js**, **user.server.controllers.js**) within the controller directory.
-
-6.Defined functions in each controller file for handling business logic.
-
-7.Exported functions from controller files for access by other components.
-
-9.Linked route files to the main application (server.js) using require statements.
-
-10.Created model files (**feed.server.models.js**, **post.server.models.js**, **social.server.models.js**, **user.server.models.js**) within the model directory.
-
-11.Implemented functions within model files for interacting with the database.
-
-12.Imported database file at the top of model files.
-
-13.Utilized callback functions to manage asynchronous database interactions effectively.
-
-14.Exported functions from model files for access by controllers.
-
-15.Imported model files into respective controllers for accessing functions.
-
-16.Implemented authentication functionalities within model functions.
-
-17.Created a middleware function for authentication in the lib directory.
-
-18.Imported the middleware function into route files and applied it to endpoints requiring authentication.
-
-19.Utilized Postman for testing API endpoints.
-
-20.Incorporated the "bad-words" dependency for profanity filtering.
-
-**This development process ensures a structured and modular backend architecture for Chirrup, facilitating scalability, maintainability, and extensibility.**
-
-
-Canis Ouambo
-
-
-
-
-
-
-
-
-
-
-
+Built as part of the Full-Stack Web Development course at Manchester Metropolitan University.
