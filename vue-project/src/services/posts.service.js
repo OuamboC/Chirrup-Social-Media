@@ -88,7 +88,7 @@ const getsearch = () => {
 
 export const postService = {
     getFeed,
-    getposts,
+    getPosts,
     getusers,
     getsearch
     
