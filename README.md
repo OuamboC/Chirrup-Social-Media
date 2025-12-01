@@ -1,11 +1,20 @@
-# 🐦 Chirrup - Social Media Platform
+<div align="center">
+  <img src="vue-project/public/favicon.ico" alt="Chirrup Logo" width="80" height="80">
+  
+  # 📬 Chirrup - Social Media Platform
 
-[![Live Demo](https://img.shields.io/badge/demo-live-success?style=for-the-badge)](https://chirrup-social-media.vercel.app)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](LICENSE)
-[![Node](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg?style=for-the-badge&logo=node.js)](https://nodejs.org)
-[![Vue](https://img.shields.io/badge/vue-3.x-green.svg?style=for-the-badge&logo=vue.js)](https://vuejs.org)
+  [![Live Demo](https://img.shields.io/badge/demo-live-success?style=for-the-badge)](https://chirrup-social-media.vercel.app)
+  [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](LICENSE)
+  [![Node](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg?style=for-the-badge&logo=node.js)](https://nodejs.org)
+  [![Vue](https://img.shields.io/badge/vue-3.x-green.svg?style=for-the-badge&logo=vue.js)](https://vuejs.org)
 
-> A modern, full-stack social media platform with real-time interactions, user authentication, and sleek Tailwind CSS design.
+  ### A modern, full-stack social media platform with real-time interactions, user authentication, and sleek Tailwind CSS design.
+
+  [Live Demo](https://chirrup-social-media.vercel.app) • [Report Bug](https://github.com/OuamboC/Chirrup-Social-Media/issues) • [Request Feature](https://github.com/OuamboC/Chirrup-Social-Media/issues)
+
+</div>
+
+---
 
 **🔗 Live Demo:** [chirrup-social-media.vercel.app](https://chirrup-social-media.vercel.app)
 
