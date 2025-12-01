@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <!-- Modern Navigation Bar (matches your styled pages) -->
+    <!-- Modern Navigation Bar with Mobile Menu -->
     <nav class="bg-gray-900 text-white shadow-lg">
       <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between items-center h-16">
@@ -15,8 +15,8 @@
             <span class="text-xl font-bold">Chirrup</span>
           </router-link>
 
-          <!-- Navigation Links -->
-          <div class="flex items-center space-x-6">
+          <!-- Desktop Navigation Links -->
+          <div class="hidden md:flex items-center space-x-6">
             <router-link to="/" class="hover:text-blue-400 transition">Home</router-link>
             <router-link to="/profile" class="hover:text-blue-400 transition">Profile</router-link>
             <router-link to="/search" class="hover:text-blue-400 transition">Search</router-link>
@@ -26,6 +26,24 @@
               Logout
             </router-link>
           </div>
+
+          <!-- Mobile Menu Button -->
+          <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-white focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path v-if="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div v-if="mobileMenuOpen" class="md:hidden py-4 space-y-2">
+          <router-link to="/" @click="mobileMenuOpen = false" class="block py-2 px-4 hover:bg-gray-800 rounded transition">Home</router-link>
+          <router-link to="/profile" @click="mobileMenuOpen = false" class="block py-2 px-4 hover:bg-gray-800 rounded transition">Profile</router-link>
+          <router-link to="/search" @click="mobileMenuOpen = false" class="block py-2 px-4 hover:bg-gray-800 rounded transition">Search</router-link>
+          <router-link to="/users" @click="mobileMenuOpen = false" class="block py-2 px-4 hover:bg-gray-800 rounded transition">SignUp</router-link>
+          <router-link to="/login" @click="mobileMenuOpen = false" class="block py-2 px-4 hover:bg-gray-800 rounded transition">Login</router-link>
+          <router-link to="/logout" @click="mobileMenuOpen = false" class="block py-2 px-4 bg-red-600 hover:bg-red-700 rounded transition">Logout</router-link>
         </div>
       </div>
     </nav>
@@ -37,7 +55,12 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data() {
+    return {
+      mobileMenuOpen: false
+    }
+  }
 }
 </script>
 
