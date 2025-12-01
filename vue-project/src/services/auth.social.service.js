@@ -1,5 +1,5 @@
 const postFollowUser = (user_id) => {
-  return fetch("http://localhost:3333/users/" + user_id + "/follow", {
+  return fetch("https://chirrup-social-media-production.up.railway.app/users/" + user_id + "/follow", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -26,7 +26,7 @@ const postFollowUser = (user_id) => {
 };
 
 const deleteFollowUser = (user_id) => {
-  return fetch("http://localhost:3333/users/" + user_id + "/follow", {
+  return fetch("https://chirrup-social-media-production.up.railway.app/users/" + user_id + "/follow", {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

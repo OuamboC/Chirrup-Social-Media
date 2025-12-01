@@ -1,5 +1,5 @@
 const postPosts = (text) => {
-  return fetch("http://localhost:3333/posts", {
+  return fetch("https://chirrup-social-media-production.up.railway.app/posts", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -32,7 +32,7 @@ const postPosts = (text) => {
 };
 const updatePosts = (post_id, text) => {
   return fetch(
-    "http://localhost:3333/posts/" + post_id, //+ "/update"
+    "https://chirrup-social-media-production.up.railway.app/posts/" + post_id, //+ "/update"
     {
       method: "PATCH",
       headers: {
@@ -68,7 +68,7 @@ const updatePosts = (post_id, text) => {
 };
 const deletePosts = (post_id) => {
   return fetch(
-    "http://localhost:3333/posts/" + post_id, //+ "/delete"
+    "https://chirrup-social-media-production.up.railway.app/posts/" + post_id, //+ "/delete"
     {
       method: "DELETE",
       headers: {
@@ -99,7 +99,7 @@ const deletePosts = (post_id) => {
 };
 
 const likePosts = (post_id) => {
-  return fetch("http://localhost:3333/posts/" + post_id + "/like", {
+  return fetch("https://chirrup-social-media-production.up.railway.app/posts/" + post_id + "/like", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -128,7 +128,7 @@ const likePosts = (post_id) => {
 };
 
 const unlikePosts = (post_id) => {
-  return fetch("http://localhost:3333/posts/" + post_id + "/like", {
+  return fetch("https://chirrup-social-media-production.up.railway.app/posts/" + post_id + "/like", {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

@@ -1,5 +1,5 @@
 const postusers = (first_name, last_name, username, password) => {
-  return fetch("http://localhost:3333/users", {
+  return fetch("https://chirrup-social-media-production.up.railway.app/users", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -36,7 +36,7 @@ const postusers = (first_name, last_name, username, password) => {
 };
 
 const login = (username, password) => {
-  return fetch("http://localhost:3333/login", {
+  return fetch("https://chirrup-social-media-production.up.railway.app/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -71,7 +71,7 @@ const login = (username, password) => {
     });
 };
 const logout = () => {
-  return fetch("http://localhost:3333/logout", {
+  return fetch("https://chirrup-social-media-production.up.railway.app/logout", {
     method: "POST", // Specify the HTTP method
     headers: {
       "Content-Type": "application/json",

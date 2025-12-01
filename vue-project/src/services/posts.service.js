@@ -1,5 +1,5 @@
 const getFeed = () => {
-    return fetch("http://localhost:3333/feed")
+    return fetch("https://chirrup-social-media-production.up.railway.app/feed")
    .then((response) => {
     if(response.status === 200){
         return response.json();
@@ -16,8 +16,8 @@ const getFeed = () => {
    })
 };
 
-const getposts = (post_id) => {
-    return fetch("http://localhost:3333/posts/" + post_id)
+const getPosts = (post_id) => {
+    return fetch("https://chirrup-social-media-production.up.railway.app/posts/" + post_id)
     .then((response) => {
     if (response.status === 200){
         return response.json();
@@ -37,7 +37,7 @@ const getposts = (post_id) => {
 };
 
 const getusers = (user_id) => {
-    return fetch("http://localhost:3333/users/" + user_id)
+    return fetch("https://chirrup-social-media-production.up.railway.app/users/" + user_id)
         .then((response) => {
             if (response.status === 200) {
                 return response.json();
@@ -57,7 +57,7 @@ const getusers = (user_id) => {
 };
 
 const getsearch = () => {
-    return fetch("http://localhost:3333/search")
+    return fetch("https://chirrup-social-media-production.up.railway.app/search")
         .then((response) => {
             if (response.status === 200) {
                 return response.json();
