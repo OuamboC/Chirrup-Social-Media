@@ -294,7 +294,7 @@ export default {
       this.error = "";
 
       postService
-        .getposts(this.post_id)
+        .getPosts(this.post_id)
         .then((post) => {
           this.text = post.text;
           this.originalText = post.text;

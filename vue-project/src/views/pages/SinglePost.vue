@@ -385,7 +385,7 @@ export default {
     },
     refreshPost() {
       postService
-        .getposts(this.$route.params.id)
+        .getPosts(this.$route.params.id)
         .then((post) => {
           this.post = post;
           this.post.loading = false;
