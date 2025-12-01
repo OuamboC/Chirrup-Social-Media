@@ -1,93 +1,107 @@
-# Chirrup - Social Media Platform
+# 🐦 Chirrup - Social Media Platform
 
-A full-stack social media platform built with Vue.js and Node.js, featuring real-time interactions, user authentication, and content management.
+[![Live Demo](https://img.shields.io/badge/demo-live-success?style=for-the-badge)](https://chirrup-social-media.vercel.app)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](LICENSE)
+[![Node](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg?style=for-the-badge&logo=node.js)](https://nodejs.org)
+[![Vue](https://img.shields.io/badge/vue-3.x-green.svg?style=for-the-badge&logo=vue.js)](https://vuejs.org)
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Node](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg)
-![Vue](https://img.shields.io/badge/vue-3.x-green.svg)
+> A modern, full-stack social media platform with real-time interactions, user authentication, and sleek Tailwind CSS design.
 
-## 🚀 Features
+**🔗 Live Demo:** [chirrup-social-media.vercel.app](https://chirrup-social-media.vercel.app)
 
-- **User Authentication** - Secure registration and login system
-- **Social Feed** - View and interact with posts from other users
-- **Post Management** - Create, update, and delete your own posts
-- **Social Interactions** - Like/unlike posts, follow/unfollow users
-- **User Profiles** - View detailed user profiles and activity
-- **Search Functionality** - Find users by username
-- **Profanity Filter** - Automated content moderation using bad-words library
+## ✨ Features
+
+- 🔐 **User Authentication** - Secure JWT-based registration and login
+- 📱 **Responsive Design** - Mobile-first UI with Tailwind CSS
+- 📝 **Post Management** - Create, read, update, and delete posts
+- ❤️ **Social Interactions** - Like/unlike posts, follow/unfollow users
+- 👤 **User Profiles** - Detailed profiles with follower/following stats
+- 🔍 **Search Functionality** - Find users by username
+- 🎨 **Modern UI** - Gradient design with smooth animations
+- 🛡️ **Content Moderation** - Built-in profanity filter
 
 ## 🛠️ Tech Stack
 
-**Frontend:**
+### Frontend
+- **Vue.js 3** - Composition API for reactive components
+- **Vue Router** - Client-side routing
+- **Tailwind CSS** - Utility-first styling
+- **Axios** - HTTP requests
 
-- Vue.js 3 with Composition API
-- Vue Router for navigation
-- Axios for API requests
+### Backend
+- **Node.js** - JavaScript runtime
+- **Express.js** - Web application framework
+- **SQLite** - Lightweight database
+- **JWT** - Secure authentication tokens
 
-**Backend:**
+### DevOps
+- **Vercel** - Frontend hosting
+- **Railway** - Backend hosting
+- **Git/GitHub** - Version control
+- **Mocha** - Automated testing
 
-- Node.js with Express.js
-- SQLite database
-- JWT authentication
-- Mocha for automated testing
+## 🚀 Live Deployment
+
+**Frontend:** https://chirrup-social-media.vercel.app  
+**Backend API:** https://chirrup-social-media-production.up.railway.app
 
 ## 📋 Prerequisites
 
 - Node.js (v14 or higher)
 - npm or yarn
 
-## ⚡ Quick Start
+## ⚡ Local Development Setup
 
-### Backend Setup
-
-1. Clone the repository:
+### 1️⃣ Clone the Repository
 
 ```bash
 git clone https://github.com/OuamboC/Chirrup-Social-Media.git
 cd Chirrup-Social-Media
 ```
 
-2. Install backend dependencies:
+### 2️⃣ Backend Setup
 
 ```bash
+# Install dependencies
 npm install
-```
 
-3. Start the backend server:
-
-```bash
+# Start development server
 npm run dev
 ```
 
-The server will run on `http://localhost:3333`
+Server runs on `http://localhost:3333`
 
-4. (Optional) Run tests:
-
+**Run tests:**
 ```bash
 npm run test
 ```
 
-### Frontend Setup
+**Reset database:**
+```bash
+npm run wipe
+```
 
-1. Navigate to the Vue project:
+### 3️⃣ Frontend Setup
 
 ```bash
+# Navigate to Vue project
 cd vue-project
-```
 
-2. Install frontend dependencies:
-
-```bash
+# Install dependencies
 npm install
-```
 
-3. Start the development server:
-
-```bash
+# Start development server
 npm run dev
 ```
 
-4. Open your browser and visit the URL provided (typically `http://localhost:5173`)
+Frontend runs on `http://localhost:5173`
+
+### 4️⃣ Build for Production
+
+```bash
+# In vue-project directory
+npm run build
+```
 
 ## 📁 Project Structure
 
@@ -111,55 +125,135 @@ Chirrup-Social-Media/
 
 ## 🔑 API Endpoints
 
-### Authentication
+### 🔐 Authentication
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/users` | Register new account |
+| `POST` | `/login` | User login |
+| `POST` | `/logout` | User logout |
 
-- `POST /api/register` - Create new account
-- `POST /api/login` - User login
+### 📝 Posts
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `GET` | `/feed` | Get all posts | ❌ |
+| `GET` | `/posts/:id` | Get single post | ❌ |
+| `POST` | `/posts` | Create post | ✅ |
+| `PATCH` | `/posts/:id` | Update post | ✅ |
+| `DELETE` | `/posts/:id` | Delete post | ✅ |
+| `POST` | `/posts/:id/like` | Like post | ✅ |
+| `DELETE` | `/posts/:id/like` | Unlike post | ✅ |
 
-### Posts
+### 👥 Social
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `POST` | `/users/:id/follow` | Follow user | ✅ |
+| `DELETE` | `/users/:id/follow` | Unfollow user | ✅ |
 
-- `GET /api/feed` - Get all posts
-- `POST /api/posts` - Create new post (authenticated)
-- `PATCH /api/posts/:id` - Update post (authenticated)
-- `DELETE /api/posts/:id` - Delete post (authenticated)
-
-### Social
-
-- `POST /api/users/:id/follow` - Follow user (authenticated)
-- `DELETE /api/users/:id/follow` - Unfollow user (authenticated)
-- `POST /api/posts/:id/like` - Like post (authenticated)
-- `DELETE /api/posts/:id/like` - Unlike post (authenticated)
-
-### Users
-
-- `GET /api/users` - Search users
-- `GET /api/users/:id` - Get user profile
+### 👤 Users
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `GET` | `/users/:id` | Get user profile | ❌ |
+| `GET` | `/search?q=query` | Search users | ❌ |
 
 ## 🧪 Testing
 
-Run the automated test suite:
+Comprehensive test suite covering authentication, posts, social features, and more.
 
 ```bash
+# Run all tests
 npm run test
+
+# Reset database
+npm run wipe
 ```
 
-To reset the database before testing:
+**Test Coverage:**
+- ✅ User creation & authentication
+- ✅ Post CRUD operations
+- ✅ Like/unlike functionality
+- ✅ Follow/unfollow system
+- ✅ Search functionality
+- ✅ Error handling
+
+## 🎯 Key Features Showcase
+
+### Responsive Design
+- Mobile-first approach with Tailwind CSS
+- Hamburger menu for mobile navigation
+- Adaptive layouts for all screen sizes
+
+### User Experience
+- Smooth animations and transitions
+- Real-time updates
+- Intuitive interface
+- Loading states and error handling
+
+### Security
+- JWT token authentication
+- Password hashing
+- Protected routes
+- Session management
+
+## 📸 Screenshots
 
 ```bash
-npm run wipe
+# Home Feed
+Modern gradient design with post cards
+
+# User Profile
+Stats display (followers, following, posts)
+
+# Mobile View
+Responsive hamburger menu navigation
+```
+
+## 🚀 Deployment
+
+### Vercel (Frontend)
+```bash
+# Automatic deployment on push to master
+vercel.json configured for vue-project subdirectory
+```
+
+### Railway (Backend)
+```bash
+# Connected to GitHub
+# Automatic deploys on push
+# Port: 3333 (exposed via Railway domain)
 ```
 
 ## 📝 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👤 Author
+## 👨‍💻 Author
 
-**Canis Ouambo**
+**Canis Breal Ouambo**
 
-- GitHub: [@OuamboC](https://github.com/OuamboC)
-- LinkedIn: [canis-ouambo](https://www.linkedin.com/in/canis-breal-ouambo/)
+- 🌐 Portfolio: [Coming Soon]
+- 💼 LinkedIn: [canis-breal-ouambo](https://www.linkedin.com/in/canis-breal-ouambo/)
+- 🐙 GitHub: [@OuamboC](https://github.com/OuamboC)
+- 📧 Email: [ouambocanis@gmail.com]
 
 ## 🙏 Acknowledgments
 
-Built as part of the Full-Stack Web Development course at Manchester Metropolitan University.
+- Built as part of the Full-Stack Web Development course at **Manchester Metropolitan University**
+- Special thanks to the Vue.js and Node.js communities
+- Inspired by modern social media platforms
+
+## 📈 Future Enhancements
+
+- [ ] Image upload support
+- [ ] Real-time notifications
+- [ ] Direct messaging
+- [ ] Hashtag system
+- [ ] Post comments
+- [ ] Dark mode toggle
+- [ ] Email verification
+- [ ] Password reset functionality
+
+---
+
+⭐ **Star this repo if you found it helpful!**
+
+**Live Demo:** [chirrup-social-media.vercel.app](https://chirrup-social-media.vercel.app)
