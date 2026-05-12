@@ -242,7 +242,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - 🌐 Portfolio: [Coming Soon]
 - 💼 LinkedIn: [canis-breal-ouambo](https://www.linkedin.com/in/canis-breal-ouambo/)
 - 🐙 GitHub: [@OuamboC](https://github.com/OuamboC)
-- 📧 Email: [ouambocanis@gmail.com](mailto:ouambocanis@gmail.com)
 
 ## 🙏 Acknowledgments
 
