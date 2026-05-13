@@ -1,9 +1,9 @@
 /**
  * Vercel serverless proxy: browser calls same-origin /api/... so the backend
- * is not subject to browser CORS when Railway (or others) omit headers on errors.
+ * is not subject to browser CORS when the origin API omits CORS on errors.
  *
  * Vercel → Settings → Environment Variables:
- *   CHIRRUP_API_URL = https://your-service.up.railway.app  (no trailing slash)
+ *   CHIRRUP_API_URL = https://your-api.onrender.com  (no trailing slash)
  */
 
 function pathFromQuery(query) {
@@ -31,7 +31,7 @@ module.exports = async (req, res) => {
       .send(
         JSON.stringify({
           error:
-            "Server misconfiguration: set CHIRRUP_API_URL in Vercel to your Railway (or other) API base URL, then redeploy.",
+            "Server misconfiguration: in Vercel set environment variable CHIRRUP_API_URL to your backend base URL (e.g. https://your-app.onrender.com), then redeploy.",
         })
       );
   }
