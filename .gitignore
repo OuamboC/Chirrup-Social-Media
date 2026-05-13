@@ -1,0 +1,35 @@
+# Dependencies (install with npm ci / npm install — never commit)
+node_modules/
+vue-project/node_modules/
+
+# Local SQLite (created at runtime; paths differ per machine/host)
+db.sqlite
+*.sqlite
+*.sqlite-journal
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Build output
+dist/
+vue-project/dist/
+*.local
+
+# Logs and diagnostics
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# OS / editor (keep machine-specific settings out of the repo)
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Test / coverage
+coverage/
+.nyc_output/

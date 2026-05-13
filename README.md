@@ -5,7 +5,7 @@
 
   [![Live Demo](https://img.shields.io/badge/demo-live-success?style=for-the-badge)](https://chirrup-social-media.vercel.app)
   [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](LICENSE)
-  [![Node](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen.svg?style=for-the-badge&logo=node.js)](https://nodejs.org)
+  [![Node](https://img.shields.io/badge/node-22.x-brightgreen.svg?style=for-the-badge&logo=node.js)](https://nodejs.org)
   [![Vue](https://img.shields.io/badge/vue-3.x-green.svg?style=for-the-badge&logo=vue.js)](https://vuejs.org)
 
   ### A modern, full-stack social media platform with real-time interactions, user authentication, and sleek Tailwind CSS design.
@@ -56,7 +56,7 @@
 
 ## 📋 Prerequisites
 
-- Node.js (v14 or higher)
+- Node.js **22.x** (see `.nvmrc`; `engines` in `package.json` files)
 - npm or yarn
 
 ## ⚡ Local Development Setup
@@ -227,7 +227,7 @@ vercel.json configured for vue-project subdirectory
 ### Render (Backend)
 
 1. Push this repo to GitHub, then in [Render](https://render.com): **New** → **Blueprint** (uses root `render.yaml`) **or** **Web Service** (configure manually below).
-2. **Manual Web Service — set these exactly:** **Root Directory:** leave **empty** (repo root). Do **not** use `src`; the Express API and root `package.json` are at the top level (`server.js`, `app/`, `database.js`). **Build command:** `npm install`. **Start command:** `npm start`. This repo uses **npm** at the root (no `yarn.lock` there), not Yarn.
+2. **Manual Web Service:** **Root Directory:** empty (repo root). **Build command:** `npm ci`. **Start command:** `npm start`. The repo uses a lockfile only (no committed `node_modules`), so Linux gets correct native builds for **sqlite3**.
 3. Render injects **`PORT`**; the server binds `0.0.0.0` to that port. No extra environment variables are required for the API itself.
 4. Copy the service URL (for example `https://chirrup-api.onrender.com`). In **Vercel** → your project → **Environment Variables**, set **`CHIRRUP_API_URL`** to that URL (no trailing slash), then redeploy the frontend so the `/api` proxy can reach the API.
 
@@ -236,6 +236,15 @@ vercel.json configured for vue-project subdirectory
 ### Vercel proxy (`CHIRRUP_API_URL`)
 
 The Vue production build calls same-origin **`/api/...`**, which is handled by `api/[...slug].js` on Vercel and forwarded to **`CHIRRUP_API_URL`**. You must set that variable to your Render API base URL after each new backend host change.
+
+### Ship checklist
+
+| Where | What to do |
+|--------|------------|
+| **Render (API)** | Root directory **empty**. Build **`npm ci`**, start **`npm start`**. Use branch **`main` or `master`** to match GitHub. Node **22.x** is set in `package.json` → `engines`. |
+| **Vercel (UI)** | Connect the repo; `vercel.json` runs **`npm ci`** then **`npm run build`** in `vue-project`. Set **`CHIRRUP_API_URL`** to your Render service URL (no trailing slash), then redeploy. |
+| **Local full stack** | From repo root: `npm ci` then `npm run dev` (API on **3333**). In another terminal: `cd vue-project && npm ci && npm run dev` (UI on **5173**). |
+| **Git** | `node_modules/`, `db.sqlite`, and build output are **gitignored** — always commit **`package-lock.json`** files so `npm ci` works everywhere. |
 
 ## 📝 License
 

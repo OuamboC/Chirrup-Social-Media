@@ -7,6 +7,8 @@ services:
     runtime: node
     plan: free
     region: frankfurt
-    buildCommand: npm install
+    # npm ci removes node_modules then installs from lockfile — required when the
+    # repo tracks node_modules built on another OS (Windows .node binaries break on Linux).
+    buildCommand: npm ci
     startCommand: npm start
     healthCheckPath: /
