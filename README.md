@@ -219,9 +219,11 @@ Responsive hamburger menu navigation
 ## 🚀 Deployment
 
 ### Vercel (Frontend)
+
+`vercel.json` at the repo root tells Vercel to treat the app as **Vite**, install with **`npm ci --prefix vue-project`**, build with **`npm run build --prefix vue-project`**, and publish **`vue-project/dist`**. Keep the Vercel project **Root Directory** set to **`.`** (not `vue-project`), so the root `api/` serverless proxy stays included.
+
 ```bash
-# Automatic deployment on push to master
-vercel.json configured for vue-project subdirectory
+# Automatic deployment on push; see vercel.json
 ```
 
 ### Render (Backend)
@@ -242,7 +244,7 @@ The Vue production build calls same-origin **`/api/...`**, which is handled by `
 | Where | What to do |
 |--------|------------|
 | **Render (API)** | Root directory **empty**. Build **`npm ci`**, start **`npm start`**. Use branch **`main` or `master`** to match GitHub. Node **22.x** is set in `package.json` → `engines`. |
-| **Vercel (UI)** | Connect the repo; `vercel.json` runs **`npm ci`** then **`npm run build`** in `vue-project`. Set **`CHIRRUP_API_URL`** to your Render service URL (no trailing slash), then redeploy. |
+| **Vercel (UI)** | Leave project **Root Directory** empty (repo root). `vercel.json` uses **`npm ci --prefix vue-project`**, **`vite`** framework, and **`vue-project/dist`**. Set **`CHIRRUP_API_URL`**, then redeploy. |
 | **Local full stack** | From repo root: `npm ci` then `npm run dev` (API on **3333**). In another terminal: `cd vue-project && npm ci && npm run dev` (UI on **5173**). |
 | **Git** | `node_modules/`, `db.sqlite`, and build output are **gitignored** — always commit **`package-lock.json`** files so `npm ci` works everywhere. |
 

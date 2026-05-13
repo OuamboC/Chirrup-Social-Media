@@ -1,5 +1,7 @@
 {
-  "installCommand": "cd vue-project && npm ci",
-  "buildCommand": "cd vue-project && npm run build",
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "installCommand": "npm ci --prefix vue-project",
+  "buildCommand": "npm run build --prefix vue-project",
   "outputDirectory": "vue-project/dist"
 }
