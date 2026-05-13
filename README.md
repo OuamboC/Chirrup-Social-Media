@@ -220,7 +220,7 @@ Responsive hamburger menu navigation
 
 ### Vercel (Frontend)
 
-`vercel.json` at the repo root tells Vercel to treat the app as **Vite**, install with **`npm ci --prefix vue-project`**, build with **`npm run build --prefix vue-project`**, and publish **`vue-project/dist`**. Keep the Vercel project **Root Directory** set to **`.`** (not `vue-project`), so the root `api/` serverless proxy stays included.
+`vercel.json` at the repo root tells Vercel to treat the app as **Vite**, install with **`npm install --prefix vue-project`** (not `npm ci`: Rollup’s native optional package for Linux is sometimes skipped by `npm ci`), build with **`npm run build --prefix vue-project`**, and publish **`vue-project/dist`**. Keep the Vercel project **Root Directory** set to **`.`** (not `vue-project`), so the root `api/` serverless proxy stays included.
 
 ```bash
 # Automatic deployment on push; see vercel.json
@@ -237,6 +237,8 @@ Responsive hamburger menu navigation
 
 If the service crashes on startup with **`GLIBC_2.xx not found`** on `node_sqlite3.node`, the `sqlite3` package used a **prebuilt binary** for a newer Linux than Render’s. The `render.yaml` **build command** ends with **`npm rebuild sqlite3 --build-from-source`** so the addon is compiled on Render’s image. Use the same in the dashboard if you are not using the Blueprint.
 
+**Render still running `npm install` only or an old commit:** Your logs must show the **same commit as GitHub `master`** (for example **`71e2945`** or newer) and a build command that includes **`npm rebuild sqlite3 --build-from-source`**. In the Render dashboard: **Settings → Build & Deploy → Build Command**, paste `npm ci && npm rebuild sqlite3 --build-from-source`, then **Manual Deploy → Clear build cache & deploy** so an old cached `node_modules` is not reused.
+
 ### Vercel proxy (`CHIRRUP_API_URL`)
 
 The Vue production build calls same-origin **`/api/...`**, which is handled by `api/[...slug].js` on Vercel and forwarded to **`CHIRRUP_API_URL`**. You must set that variable to your Render API base URL after each new backend host change.
@@ -246,7 +248,7 @@ The Vue production build calls same-origin **`/api/...`**, which is handled by `
 | Where | What to do |
 |--------|------------|
 | **Render (API)** | Root directory **empty**. Build **`npm ci && npm rebuild sqlite3 --build-from-source`**, start **`npm start`**. (Plain `npm install` can leave a `sqlite3` binary linked to a **too-new glibc**; rebuild fixes `GLIBC_… not found` on Render.) |
-| **Vercel (UI)** | Leave project **Root Directory** empty (repo root). `vercel.json` uses **`npm ci --prefix vue-project`**, **`vite`** framework, and **`vue-project/dist`**. Set **`CHIRRUP_API_URL`**, then redeploy. |
+| **Vercel (UI)** | Root Directory **empty** (repo root). Install uses **`npm install --prefix vue-project`** so Rollup’s Linux optional binary (`@rollup/rollup-linux-x64-gnu`) is present — **`npm ci` alone can skip it** ([npm#4828](https://github.com/npm/cli/issues/4828)). Build **`npm run build --prefix vue-project`**. Set **`CHIRRUP_API_URL`**. |
 | **Local full stack** | From repo root: `npm ci` then `npm run dev` (API on **3333**). In another terminal: `cd vue-project && npm ci && npm run dev` (UI on **5173**). |
 | **Git** | `node_modules/`, `db.sqlite`, and build output are **gitignored** — always commit **`package-lock.json`** files so `npm ci` works everywhere. |
 
