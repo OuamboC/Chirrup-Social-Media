@@ -10,6 +10,14 @@ if (process.platform !== "linux") {
   process.exit(0);
 }
 
+// Vercel installs root deps for serverless `/api`; only Render runs Express + sqlite3.
+if (process.env.VERCEL) {
+  console.log(
+    "[postinstall] Skipping sqlite3 rebuild on Vercel (API + DB live on Render)."
+  );
+  process.exit(0);
+}
+
 const root = path.join(__dirname, "..");
 console.log("[postinstall] Linux detected: rebuilding sqlite3 for this glibc…");
 try {
