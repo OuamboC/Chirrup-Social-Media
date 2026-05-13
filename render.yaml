@@ -7,8 +7,8 @@ services:
     runtime: node
     plan: free
     region: frankfurt
-    # npm ci installs deps; sqlite3 prebuilds may target a newer glibc than Render’s
-    # runtime — rebuild from source so the native addon links against Render’s libc.
-    buildCommand: npm ci && npm rebuild sqlite3 --build-from-source
+    # Root package.json postinstall rebuilds sqlite3 on Linux (fixes glibc mismatch
+    # when the dashboard still uses plain `npm install`).
+    buildCommand: npm ci
     startCommand: npm start
     healthCheckPath: /

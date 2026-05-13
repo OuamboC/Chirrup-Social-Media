@@ -229,15 +229,17 @@ Responsive hamburger menu navigation
 ### Render (Backend)
 
 1. Push this repo to GitHub, then in [Render](https://render.com): **New** → **Blueprint** (uses root `render.yaml`) **or** **Web Service** (configure manually below).
-2. **Manual Web Service:** **Root Directory:** empty (repo root). **Build command:** `npm ci && npm rebuild sqlite3 --build-from-source`. **Start command:** `npm start`.
+2. **Manual Web Service:** **Root Directory:** empty (repo root). **Build command:** `npm ci` or `npm install` (both run **`postinstall`**, which rebuilds **sqlite3** on Linux for Render’s glibc). **Start command:** `npm start`.
 3. Render injects **`PORT`**; the server binds `0.0.0.0` to that port. No extra environment variables are required for the API itself.
 4. Copy the service URL (for example `https://chirrup-api.onrender.com`). In **Vercel** → your project → **Environment Variables**, set **`CHIRRUP_API_URL`** to that URL (no trailing slash), then redeploy the frontend so the `/api` proxy can reach the API.
 
 **Note:** SQLite (`db.sqlite`) lives on the instance disk. On Render’s free web tier the filesystem is **ephemeral**: data can reset when the service restarts or redeploys. For a production app you would use Render PostgreSQL or a persistent disk.
 
-If the service crashes on startup with **`GLIBC_2.xx not found`** on `node_sqlite3.node`, the `sqlite3` package used a **prebuilt binary** for a newer Linux than Render’s. The `render.yaml` **build command** ends with **`npm rebuild sqlite3 --build-from-source`** so the addon is compiled on Render’s image. Use the same in the dashboard if you are not using the Blueprint.
+If the service crashes on startup with **`GLIBC_2.xx not found`** on `node_sqlite3.node`, the `sqlite3` package used a **prebuilt binary** for a newer Linux than Render’s. The repo’s **`postinstall`** script runs **`npm rebuild sqlite3 --build-from-source`** automatically on **Linux** after every install, so a plain **`npm install`** build on Render still produces a compatible binary once this commit is deployed.
 
-**Render still running `npm install` only or an old commit:** Your logs must show the **same commit as GitHub `master`** (for example **`71e2945`** or newer) and a build command that includes **`npm rebuild sqlite3 --build-from-source`**. In the Render dashboard: **Settings → Build & Deploy → Build Command**, paste `npm ci && npm rebuild sqlite3 --build-from-source`, then **Manual Deploy → Clear build cache & deploy** so an old cached `node_modules` is not reused.
+**Stale Render cache:** If you still see glibc errors after updating, use **Manual Deploy → Clear build cache & deploy**.
+
+**Old dashboard text:** You no longer need a long custom build command; `npm install` or `npm ci` at the repo root is enough **on commits that include `scripts/rebuild-sqlite-on-linux.js`**.
 
 ### Vercel proxy (`CHIRRUP_API_URL`)
 
@@ -247,12 +249,13 @@ The Vue production build calls same-origin **`/api/...`**, which is handled by `
 
 | Where | What to do |
 |--------|------------|
-| **Render (API)** | Root directory **empty**. Build **`npm ci && npm rebuild sqlite3 --build-from-source`**, start **`npm start`**. (Plain `npm install` can leave a `sqlite3` binary linked to a **too-new glibc**; rebuild fixes `GLIBC_… not found` on Render.) |
+| **Render (API)** | Root directory **empty**. Build **`npm ci`** (Blueprint default) or **`npm install`** — **`postinstall`** rebuilds **sqlite3** on Linux. Start **`npm start`**. |
 | **Vercel (UI)** | Root Directory **empty**. **`npm ci --prefix vue-project`** then **`npm run build --prefix vue-project`** (see `vercel.json`). The Vue app lists **`@rollup/rollup-linux-x64-gnu`** under **`optionalDependencies`** so the lockfile includes the Linux Rollup binary (Windows-only lockfiles used to omit it). Set **`CHIRRUP_API_URL`**. |
 | **Local full stack** | From repo root: `npm ci` then `npm run dev` (API on **3333**). In another terminal: `cd vue-project && npm ci && npm run dev` (UI on **5173**). |
 | **Git** | `node_modules/`, `db.sqlite`, and build output are **gitignored** — always commit **`package-lock.json`** files so `npm ci` works everywhere. |
 
 When you **upgrade Vite / Rollup**, run `npm ls rollup` in `vue-project` and set **`optionalDependencies["@rollup/rollup-linux-x64-gnu"]`** in `vue-project/package.json` to that **exact** Rollup version, then `npm install` and commit the updated lockfile so Vercel keeps the Linux native binary.
+
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
