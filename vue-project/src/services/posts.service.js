@@ -1,7 +1,30 @@
 import { apiUrl, networkErrorMessage } from "../config";
 
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/** Retries help when Render is cold or the Vercel→Render hop times out briefly. */
+async function fetchFeedWithRetry(attempts = 3) {
+  let lastErr;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await fetch(apiUrl("/feed"));
+    } catch (e) {
+      lastErr = e;
+      const canRetry = i < attempts - 1 && e && e.name === "TypeError";
+      if (canRetry) {
+        await delay(2000 * (i + 1));
+        continue;
+      }
+      throw e;
+    }
+  }
+  throw lastErr;
+}
+
 const getFeed = () => {
-    return fetch(apiUrl("/feed"))
+    return fetchFeedWithRetry()
    .then(async (response) => {
     if (response.status === 200) {
         return response.json();

@@ -3,5 +3,10 @@
   "framework": "vite",
   "installCommand": "npm ci --prefix vue-project",
   "buildCommand": "npm run build --prefix vue-project",
-  "outputDirectory": "vue-project/dist"
+  "outputDirectory": "vue-project/dist",
+  "functions": {
+    "api/[...slug].js": {
+      "maxDuration": 60
+    }
+  }
 }
