@@ -220,7 +220,7 @@ Responsive hamburger menu navigation
 
 ### Vercel (Frontend)
 
-`vercel.json` at the repo root tells Vercel to treat the app as **Vite**, install with **`npm install --prefix vue-project`** (not `npm ci`: Rollup’s native optional package for Linux is sometimes skipped by `npm ci`), build with **`npm run build --prefix vue-project`**, and publish **`vue-project/dist`**. Keep the Vercel project **Root Directory** set to **`.`** (not `vue-project`), so the root `api/` serverless proxy stays included.
+`vercel.json` at the repo root tells Vercel to treat the app as **Vite**, install with **`npm ci --prefix vue-project`**, build with **`npm run build --prefix vue-project`**, and publish **`vue-project/dist`**. The Vue **`package.json`** declares **`@rollup/rollup-linux-x64-gnu`** under **`optionalDependencies`** (version aligned with Rollup) so `package-lock.json` records the Linux native package—CI on Linux installs it; on Windows it is skipped. Keep the Vercel project **Root Directory** set to **`.`** (not `vue-project`), so the root `api/` serverless proxy stays included.
 
 ```bash
 # Automatic deployment on push; see vercel.json
@@ -248,10 +248,11 @@ The Vue production build calls same-origin **`/api/...`**, which is handled by `
 | Where | What to do |
 |--------|------------|
 | **Render (API)** | Root directory **empty**. Build **`npm ci && npm rebuild sqlite3 --build-from-source`**, start **`npm start`**. (Plain `npm install` can leave a `sqlite3` binary linked to a **too-new glibc**; rebuild fixes `GLIBC_… not found` on Render.) |
-| **Vercel (UI)** | Root Directory **empty** (repo root). Install uses **`npm install --prefix vue-project`** so Rollup’s Linux optional binary (`@rollup/rollup-linux-x64-gnu`) is present — **`npm ci` alone can skip it** ([npm#4828](https://github.com/npm/cli/issues/4828)). Build **`npm run build --prefix vue-project`**. Set **`CHIRRUP_API_URL`**. |
+| **Vercel (UI)** | Root Directory **empty**. **`npm ci --prefix vue-project`** then **`npm run build --prefix vue-project`** (see `vercel.json`). The Vue app lists **`@rollup/rollup-linux-x64-gnu`** under **`optionalDependencies`** so the lockfile includes the Linux Rollup binary (Windows-only lockfiles used to omit it). Set **`CHIRRUP_API_URL`**. |
 | **Local full stack** | From repo root: `npm ci` then `npm run dev` (API on **3333**). In another terminal: `cd vue-project && npm ci && npm run dev` (UI on **5173**). |
 | **Git** | `node_modules/`, `db.sqlite`, and build output are **gitignored** — always commit **`package-lock.json`** files so `npm ci` works everywhere. |
 
+When you **upgrade Vite / Rollup**, run `npm ls rollup` in `vue-project` and set **`optionalDependencies["@rollup/rollup-linux-x64-gnu"]`** in `vue-project/package.json` to that **exact** Rollup version, then `npm install` and commit the updated lockfile so Vercel keeps the Linux native binary.
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
