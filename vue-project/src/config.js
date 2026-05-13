@@ -19,7 +19,12 @@ export function apiUrl(path) {
 /** User-visible message when fetch fails (network, CORS, DNS, etc.) */
 export function networkErrorMessage(err) {
   if (err && typeof err === "object" && err.name === "TypeError") {
-    return "Could not reach the API. If you are on the live site, set CHIRRUP_API_URL on Vercel to your backend URL, then redeploy.";
+    return (
+      "Network error: the browser could not complete the request to /api. " +
+      "Open your Render API in a new tab to wake it (free tier sleeps), then refresh. " +
+      "If it persists: Vercel → Production env CHIRRUP_API_URL must match your Render base URL, then redeploy; " +
+      "in DevTools → Network inspect /api/feed."
+    );
   }
   return typeof err === "string" ? err : err?.message || "Something went wrong";
 }
