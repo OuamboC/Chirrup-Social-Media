@@ -45,14 +45,14 @@
 
 ### DevOps
 - **Vercel** - Frontend hosting
-- **Railway** - Backend hosting
+- **Render** - Backend hosting (see `render.yaml`)
 - **Git/GitHub** - Version control
 - **Mocha** - Automated testing
 
 ## 🚀 Live Deployment
 
 **Frontend:** https://chirrup-social-media.vercel.app  
-**Backend API:** https://chirrup-social-media-production.up.railway.app
+**Backend API:** Deploy on Render (see below), then set **CHIRRUP_API_URL** on Vercel to your Render service URL (for example `https://chirrup-api.onrender.com`).
 
 ## 📋 Prerequisites
 
@@ -224,12 +224,18 @@ Responsive hamburger menu navigation
 vercel.json configured for vue-project subdirectory
 ```
 
-### Railway (Backend)
-```bash
-# Connected to GitHub
-# Automatic deploys on push
-# Port: 3333 (exposed via Railway domain)
-```
+### Render (Backend)
+
+1. Push this repo to GitHub, then in [Render](https://render.com): **New** → **Blueprint** (uses root `render.yaml`) **or** **Web Service** (configure manually below).
+2. **Manual Web Service — set these exactly:** **Root Directory:** leave **empty** (repo root). Do **not** use `src`; the Express API and root `package.json` are at the top level (`server.js`, `app/`, `database.js`). **Build command:** `npm install`. **Start command:** `npm start`. This repo uses **npm** at the root (no `yarn.lock` there), not Yarn.
+3. Render injects **`PORT`**; the server binds `0.0.0.0` to that port. No extra environment variables are required for the API itself.
+4. Copy the service URL (for example `https://chirrup-api.onrender.com`). In **Vercel** → your project → **Environment Variables**, set **`CHIRRUP_API_URL`** to that URL (no trailing slash), then redeploy the frontend so the `/api` proxy can reach the API.
+
+**Note:** SQLite (`db.sqlite`) lives on the instance disk. On Render’s free web tier the filesystem is **ephemeral**: data can reset when the service restarts or redeploys. For a production app you would use Render PostgreSQL or a persistent disk.
+
+### Vercel proxy (`CHIRRUP_API_URL`)
+
+The Vue production build calls same-origin **`/api/...`**, which is handled by `api/[...slug].js` on Vercel and forwarded to **`CHIRRUP_API_URL`**. You must set that variable to your Render API base URL after each new backend host change.
 
 ## 📝 License
 

@@ -1,0 +1,12 @@
+# Render Blueprint: https://render.com/docs/blueprint-spec
+# After deploy, set Vercel CHIRRUP_API_URL to this service URL (e.g. https://chirrup-api.onrender.com)
+
+services:
+  - type: web
+    name: chirrup-api
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /

@@ -1,5 +1,7 @@
+import { apiUrl, networkErrorMessage } from "../config";
+
 const postPosts = (text) => {
-  return fetch("https://chirrup-social-media-production.up.railway.app/posts", {
+  return fetch(apiUrl("/posts"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -27,12 +29,12 @@ const postPosts = (text) => {
     })
     .catch((err) => {
       console.log(err);
-      return Promise.reject(err);
+      return Promise.reject(networkErrorMessage(err));
     });
 };
 const updatePosts = (post_id, text) => {
   return fetch(
-    "https://chirrup-social-media-production.up.railway.app/posts/" + post_id, //+ "/update"
+    apiUrl("/posts/" + post_id),
     {
       method: "PATCH",
       headers: {
@@ -63,12 +65,12 @@ const updatePosts = (post_id, text) => {
     })
     .catch((err) => {
       console.log(err);
-      return Promise.reject(err);
+      return Promise.reject(networkErrorMessage(err));
     });
 };
 const deletePosts = (post_id) => {
   return fetch(
-    "https://chirrup-social-media-production.up.railway.app/posts/" + post_id, //+ "/delete"
+    apiUrl("/posts/" + post_id),
     {
       method: "DELETE",
       headers: {
@@ -94,12 +96,12 @@ const deletePosts = (post_id) => {
     })
     .catch((err) => {
       console.log(err);
-      return Promise.reject(err);
+      return Promise.reject(networkErrorMessage(err));
     });
 };
 
 const likePosts = (post_id) => {
-  return fetch("https://chirrup-social-media-production.up.railway.app/posts/" + post_id + "/like", {
+  return fetch(apiUrl("/posts/" + post_id + "/like"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -123,12 +125,12 @@ const likePosts = (post_id) => {
     })
     .catch((err) => {
       console.log(err);
-      return Promise.reject(err);
+      return Promise.reject(networkErrorMessage(err));
     });
 };
 
 const unlikePosts = (post_id) => {
-  return fetch("https://chirrup-social-media-production.up.railway.app/posts/" + post_id + "/like", {
+  return fetch(apiUrl("/posts/" + post_id + "/like"), {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -152,7 +154,7 @@ const unlikePosts = (post_id) => {
     })
     .catch((err) => {
       console.log(err);
-      return Promise.reject(err);
+      return Promise.reject(networkErrorMessage(err));
     });
 };
 

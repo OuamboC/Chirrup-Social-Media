@@ -1,5 +1,7 @@
+import { apiUrl, networkErrorMessage } from "../config";
+
 const postusers = (first_name, last_name, username, password) => {
-  return fetch("https://chirrup-social-media-production.up.railway.app/users", {
+  return fetch(apiUrl("/users"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -31,12 +33,12 @@ const postusers = (first_name, last_name, username, password) => {
     })
     .catch((err) => {
       console.log(err);
-      return Promise.reject(err);
+      return Promise.reject(networkErrorMessage(err));
     });
 };
 
 const login = (username, password) => {
-  return fetch("https://chirrup-social-media-production.up.railway.app/login", {
+  return fetch(apiUrl("/login"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -67,11 +69,11 @@ const login = (username, password) => {
     })
     .catch((err) => {
       console.log(err);
-      return Promise.reject(err);
+      return Promise.reject(networkErrorMessage(err));
     });
 };
 const logout = () => {
-  return fetch("https://chirrup-social-media-production.up.railway.app/logout", {
+  return fetch(apiUrl("/logout"), {
     method: "POST", // Specify the HTTP method
     headers: {
       "Content-Type": "application/json",
@@ -91,7 +93,7 @@ const logout = () => {
     })
     .catch((error) => {
       console.log("Error:", error);
-      return Promise.reject(error);
+      return Promise.reject(networkErrorMessage(error));
     });
 };
 

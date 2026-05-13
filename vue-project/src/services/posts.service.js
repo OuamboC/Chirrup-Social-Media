@@ -1,23 +1,34 @@
+import { apiUrl, networkErrorMessage } from "../config";
+
 const getFeed = () => {
-    return fetch("https://chirrup-social-media-production.up.railway.app/feed")
-   .then((response) => {
-    if(response.status === 200){
+    return fetch(apiUrl("/feed"))
+   .then(async (response) => {
+    if (response.status === 200) {
         return response.json();
-    }else{
-        throw "Something went wrong"
     }
+    const ct = response.headers.get("content-type") || "";
+    if (ct.includes("application/json")) {
+        try {
+            const j = await response.json();
+            if (j.error) throw j.error;
+            if (j.error_message) throw j.error_message;
+        } catch (e) {
+            if (typeof e === "string") throw e;
+        }
+    }
+    throw "Something went wrong";
    })
    .then((resJson) => {
        return resJson
    })
    .catch((error) => {
     console.log("Err", error)
-    return Promise.reject(error)
+    return Promise.reject(networkErrorMessage(error))
    })
 };
 
 const getPosts = (post_id) => {
-    return fetch("https://chirrup-social-media-production.up.railway.app/posts/" + post_id)
+    return fetch(apiUrl("/posts/" + post_id))
     .then((response) => {
     if (response.status === 200){
         return response.json();
@@ -32,12 +43,12 @@ const getPosts = (post_id) => {
     })
     .catch((error) => {
         console.log("Err", error)
-        return Promise.reject(error)
+        return Promise.reject(networkErrorMessage(error))
     })
 };
 
 const getusers = (user_id) => {
-    return fetch("https://chirrup-social-media-production.up.railway.app/users/" + user_id)
+    return fetch(apiUrl("/users/" + user_id))
         .then((response) => {
             if (response.status === 200) {
                 return response.json();
@@ -52,12 +63,12 @@ const getusers = (user_id) => {
         })
         .catch((error) => {
             console.log("Err", error)
-            return Promise.reject(error)
+            return Promise.reject(networkErrorMessage(error))
         })
 };
 
 const getsearch = () => {
-    return fetch("https://chirrup-social-media-production.up.railway.app/search")
+    return fetch(apiUrl("/search"))
         .then((response) => {
             if (response.status === 200) {
                 return response.json();
@@ -80,7 +91,7 @@ const getsearch = () => {
         })
         .catch((error) => {
             console.log("Err", error);
-            return Promise.reject(error)
+            return Promise.reject(networkErrorMessage(error))
         })
 };
 

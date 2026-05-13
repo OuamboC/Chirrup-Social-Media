@@ -1,5 +1,7 @@
+import { apiUrl, networkErrorMessage } from "../config";
+
 const postFollowUser = (user_id) => {
-  return fetch("https://chirrup-social-media-production.up.railway.app/users/" + user_id + "/follow", {
+  return fetch(apiUrl("/users/" + user_id + "/follow"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -21,12 +23,12 @@ const postFollowUser = (user_id) => {
     })
     .catch((err) => {
       console.log(err);
-      return Promise.reject(err);
+      return Promise.reject(networkErrorMessage(err));
     });
 };
 
 const deleteFollowUser = (user_id) => {
-  return fetch("https://chirrup-social-media-production.up.railway.app/users/" + user_id + "/follow", {
+  return fetch(apiUrl("/users/" + user_id + "/follow"), {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -48,7 +50,7 @@ const deleteFollowUser = (user_id) => {
     })
     .catch((err) => {
       console.log(err);
-      return Promise.reject(err);
+      return Promise.reject(networkErrorMessage(err));
     });
 };
 export const authSocialService = {
