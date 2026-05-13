@@ -1,12 +1,9 @@
 /**
- * Vercel serverless proxy: browser calls same-origin /api/... so the backend
- * is not subject to browser CORS when the origin API omits CORS on errors.
+ * Same proxy as repo-root `api/[...slug].js`. Required when Vercel
+ * "Root Directory" is `vue-project` (only that folder is deployed).
+ * Keep logic in sync with the root copy.
  *
- * When Vercel "Root Directory" is the repo root (`.`), this file is used.
- * When Root Directory is `vue-project`, use `vue-project/api/[...slug].js`
- * (keep both copies in sync).
- *
- * Vercel → Settings → Environment Variables:
+ * Vercel → Environment Variables:
  *   CHIRRUP_API_URL = https://your-api.onrender.com  (no trailing slash)
  */
 

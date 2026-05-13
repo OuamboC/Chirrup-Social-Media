@@ -2,7 +2,7 @@
  * API base URL resolution:
  * - VITE_API_BASE_URL: explicit backend (any environment)
  * - Dev: direct to local Express (CORS is open on the server)
- * - Production (Vercel): same-origin /api → serverless proxy (see /api/[[...slug]].js)
+ * - Production (Vercel): same-origin /api → serverless proxy (see api/[...slug].js)
  */
 export function apiUrl(path) {
   const p = path.startsWith("/") ? path : `/${path}`;
