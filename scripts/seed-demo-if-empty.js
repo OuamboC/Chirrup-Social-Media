@@ -1,6 +1,7 @@
 /**
  * Inserts the same demo users/posts as the assignment test fixtures when the DB
  * is still empty (typical first boot on Render). Disable with SEED_DEMO_DATA=0.
+ * Called from database.js after all tables are created (avoid races with parallel DDL).
  */
 "use strict";
 

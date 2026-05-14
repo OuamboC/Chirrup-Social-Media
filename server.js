@@ -21,10 +21,7 @@ app.use((req, res) => {
     res.sendStatus(404);
 });
 
-const { seedDemoIfEmpty } = require('./scripts/seed-demo-if-empty');
-
 const PORT = Number(process.env.PORT) || 3333;
 app.listen(PORT, '0.0.0.0', () => {
     console.log('Server running on port: ' + PORT);
-    seedDemoIfEmpty().catch((e) => console.error('Demo seed failed:', e));
 });

@@ -9,7 +9,10 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
     }else{
         console.log('Connected to the SQLite database.')
 
-        db.run(`CREATE TABLE users (
+        // Queue DDL in order (posts references users; likes/followers reference others).
+        // Previously these ran in parallel, which can SQLITE_ERROR on a fresh file.
+        db.serialize(() => {
+            db.run(`CREATE TABLE users (
                 user_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 first_name text,
                 last_name text,
@@ -24,11 +27,9 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
                 }else{
                     console.log('Users table created');
                 }
-            }
-        );
+            });
 
-        
-        db.run(`CREATE TABLE posts (
+            db.run(`CREATE TABLE posts (
                 post_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 text TEXT,
                 date_published INTEGER,
@@ -40,10 +41,9 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
                 }else{
                     console.log('Posts table created');
                 }
-            }
-        );
+            });
 
-        db.run(`CREATE TABLE likes (
+            db.run(`CREATE TABLE likes (
                 post_id INTEGER,
                 user_id INTEGER,
                 PRIMARY KEY (post_id, user_id),
@@ -55,10 +55,9 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
                 }else{
                     console.log('Likes table created');
                 }
-            }
-        );
+            });
 
-        db.run(`CREATE TABLE followers (
+            db.run(`CREATE TABLE followers (
                 user_id INTEGER,
                 follower_id INTEGER,
                 PRIMARY KEY (user_id, follower_id),
@@ -70,8 +69,14 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
                 }else{
                     console.log('Followers table created');
                 }
-            }
-        )
+                try {
+                    const { seedDemoIfEmpty } = require('./scripts/seed-demo-if-empty');
+                    seedDemoIfEmpty().catch((e) => console.error('Demo seed failed:', e));
+                } catch (e) {
+                    console.error('Demo seed load failed:', e);
+                }
+            });
+        });
     }
 });
 
