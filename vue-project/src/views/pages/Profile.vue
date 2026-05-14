@@ -389,8 +389,12 @@ export default {
           const msg =
             typeof error === "string"
               ? error
-              : "Failed to load profile data";
-          if (msg.includes("Not Found")) {
+              : error?.message || "Failed to load profile data";
+          // Only reset session for known auth/user identity failures (not substring matches).
+          const mustReLogin =
+            msg === "Not Found" ||
+            msg === "Not logged in";
+          if (mustReLogin) {
             clearClientAuth();
             this.loading = false;
             this.$router.push("/login");

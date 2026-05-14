@@ -1,6 +1,28 @@
 const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
+const fs = require('fs');
 
-const DBSOURCE = 'db.sqlite';
+/**
+ * Default `db.sqlite` in the process cwd is fine locally.
+ * On Render, the free web tier disk is ephemeral — set SQLITE_PATH (or DATABASE_PATH)
+ * to a file on a mounted persistent disk if you add one (see README).
+ */
+function resolveDbPath() {
+  const raw = (process.env.SQLITE_PATH || process.env.DATABASE_PATH || '').trim();
+  const file = raw || path.join(process.cwd(), 'db.sqlite');
+  const abs = path.isAbsolute(file) ? file : path.resolve(process.cwd(), file);
+  if (raw) {
+    try {
+      fs.mkdirSync(path.dirname(abs), { recursive: true });
+    } catch (e) {
+      console.warn('[database] Could not create DB directory:', path.dirname(abs), e.message);
+    }
+  }
+  return abs;
+}
+
+const DBSOURCE = resolveDbPath();
+console.log('[database] SQLite path:', DBSOURCE);
 
 let db = new sqlite3.Database(DBSOURCE, (err) => {
     if(err){

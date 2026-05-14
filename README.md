@@ -235,6 +235,13 @@ Responsive hamburger menu navigation
 
 **Note:** SQLite (`db.sqlite`) lives on the instance disk. On Render’s free web tier the filesystem is **ephemeral**: data can reset when the service restarts or redeploys. For a production app you would use Render PostgreSQL or a persistent disk.
 
+#### Why your sign-up account disappears but demo users “come back”
+
+1. **Ephemeral disk** — Each new deploy (or cold start on some plans) can give you a **fresh empty** `db.sqlite`. Anything you created in the previous container (new users, posts, sessions) is gone.
+2. **Demo seed** — On first boot with an **empty** database, `scripts/seed-demo-if-empty.js` inserts the assignment fixture users and sample posts (unless you set `SEED_DEMO_DATA=0`). That is why “seed” accounts and `/users/1` style links can work again after a wipe: they are recreated from the fixture JSON, not because your old data was preserved.
+3. **What is normal** — Losing manually registered users on every deploy is **expected** with SQLite on a free ephemeral web instance. It is not a bug in the app logic; the database file is not durable there.
+4. **What you can do** — Use a **persistent disk** on Render (paid) and set **`SQLITE_PATH`** to a path **inside** the mount (for example `/var/render/data/chirrup.sqlite`), or move the API to **Render PostgreSQL** / another hosted database for real persistence.
+
 If the service crashes on startup with **`GLIBC_2.xx not found`** on `node_sqlite3.node`, the `sqlite3` package used a **prebuilt binary** for a newer Linux than Render’s. The repo’s **`postinstall`** script runs **`npm rebuild sqlite3 --build-from-source`** automatically on **Linux** after every install, so a plain **`npm install`** build on Render still produces a compatible binary once this commit is deployed.
 
 **Stale Render cache:** If you still see glibc errors after updating, use **Manual Deploy → Clear build cache & deploy**.

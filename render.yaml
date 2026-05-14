@@ -12,3 +12,7 @@ services:
     buildCommand: npm ci
     startCommand: npm start
     healthCheckPath: /
+    # Ephemeral disk: user data in default db.sqlite is lost on redeploy.
+    # To persist SQLite, add a Render Disk, mount e.g. /var/render/data, then set:
+    #   envVars: [{ key: SQLITE_PATH, value: /var/render/data/chirrup.sqlite }]
+    # (Paid disk feature; free tier cannot retain DB across deploys without Postgres.)

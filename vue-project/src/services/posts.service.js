@@ -5,11 +5,11 @@ function delay(ms) {
 }
 
 /** Retries help when Render is cold or the Vercel→Render hop times out briefly. */
-async function fetchFeedWithRetry(attempts = 3) {
+async function fetchFeedWithRetry(headers, attempts = 3) {
   let lastErr;
   for (let i = 0; i < attempts; i++) {
     try {
-      return await fetch(apiUrl("/feed"));
+      return await fetch(apiUrl("/feed"), { headers });
     } catch (e) {
       lastErr = e;
       const canRetry = i < attempts - 1 && e && e.name === "TypeError";
@@ -24,10 +24,18 @@ async function fetchFeedWithRetry(attempts = 3) {
 }
 
 const getFeed = () => {
-    return fetchFeedWithRetry()
+  const headers = {};
+  const token = localStorage.getItem("session_token");
+  if (token && token !== "undefined" && token !== "null") {
+    headers["X-Authorization"] = token;
+  }
+  return fetchFeedWithRetry(headers)
    .then(async (response) => {
     if (response.status === 200) {
         return response.json();
+    }
+    if (response.status === 401) {
+        throw "Not logged in";
     }
     const ct = response.headers.get("content-type") || "";
     if (ct.includes("application/json")) {
