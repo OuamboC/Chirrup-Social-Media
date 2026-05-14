@@ -107,8 +107,15 @@ module.exports = async (req, res) => {
   }
 
   const buf = Buffer.from(await upstream.arrayBuffer());
+  // fetch() decompresses gzip; upstream Content-Length / Content-Encoding refer to the
+  // wire response — forwarding them with a plain buffer breaks JSON.parse in the browser.
+  const omitFromForwardedResponse = new Set([
+    ...hopByHop,
+    "content-encoding",
+    "content-length",
+  ]);
   upstream.headers.forEach((value, key) => {
-    if (!hopByHop.has(key.toLowerCase())) {
+    if (!omitFromForwardedResponse.has(key.toLowerCase())) {
       res.setHeader(key, value);
     }
   });
