@@ -392,7 +392,10 @@ export default {
           this.loading = false;
         })
         .catch((error) => {
-          this.error = error || "Failed to load user profile";
+          this.error =
+            error === "Not Found"
+              ? "User not found. They may have been removed, or the link uses an old id after a server reset. Use Search to find people."
+              : error || "Failed to load user profile";
           this.loading = false;
         });
     },

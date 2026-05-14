@@ -95,32 +95,40 @@ const getusers = (user_id) => {
         })
 };
 
-const getsearch = () => {
-    return fetch(apiUrl("/search"))
-        .then((response) => {
-            if (response.status === 200) {
-                return response.json();
-            } else if (response.status === 400) {
-                throw 'Bad Request';
-            } else {
-                throw "Something went wrong"
-            }
-        })
-        .then(rJson => {
-            //use getItem to retrieve data from localStorage
-            const user_id= localStorage.getItem("user_id");
-            const first_name = localStorage.getItem("first_name");
-            const last_name = localStorage.getItem("last_name");
-            const username = localStorage.getItem("username");
-
-            console.log(user_id, first_name, last_name, username);
-            
-            return rJson
-        })
-        .catch((error) => {
-            console.log("Err", error);
-            return Promise.reject(networkErrorMessage(error))
-        })
+/** @param {string} [query] Search string; empty lists all users (server uses LIKE %q%). */
+const getsearch = (query = "") => {
+  const q = typeof query === "string" ? query : "";
+  const qs = new URLSearchParams();
+  qs.set("q", q);
+  return fetch(apiUrl(`/search?${qs.toString()}`))
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      if (response.status === 400) {
+        throw "Bad Request";
+      }
+      const ct = response.headers.get("content-type") || "";
+      if (ct.includes("application/json")) {
+        return response.json().then((j) => {
+          if (j && j.error) throw j.error;
+          if (j && j.error_message) throw j.error_message;
+          throw "Something went wrong";
+        });
+      }
+      throw "Something went wrong";
+    })
+    .then((rJson) => {
+      if (!Array.isArray(rJson)) {
+        console.warn("search: expected JSON array from /search", rJson);
+        return [];
+      }
+      return rJson;
+    })
+    .catch((error) => {
+      console.log("Err", error);
+      return Promise.reject(networkErrorMessage(error));
+    });
 };
 
 

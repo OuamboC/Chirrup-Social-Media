@@ -36,6 +36,7 @@ const add_post = (req, res) => {
     //Call the model functions (getIdFromToken) to convert the token object to an ID
     users.getIDFromToken(token, (err, user_id) => {
         if (err) {
+            if (err === true) return res.sendStatus(401);
             return res.status(500).send(err);
         } else {
             // Called  the profanity filter to clean the bad words in a post 
@@ -165,6 +166,7 @@ const add_like = (req, res) => {
     // Call the model function 'getIDFromToken' to convert the token into ID
     users.getIDFromToken(token, (err,user_id) =>{
         if(err){
+            if (err === true) return res.sendStatus(401);
             console.log(err);
             return res.sendStatus(500);
         }else{
@@ -195,6 +197,7 @@ const remove_like = ( req, res) => {
     //Call the model function `getIDFromToken` to convert the token object into an ID
      users.getIDFromToken(token, (err, user_id)=>{
         if(err){
+            if (err === true) return res.sendStatus(401);
             console.log(err);
             return res.sendStatus(500);
         }else {

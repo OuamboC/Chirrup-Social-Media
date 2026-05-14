@@ -16,6 +16,18 @@ export function apiUrl(path) {
   return `/api${p}`;
 }
 
+/** Best-effort message from a failed JSON response body (reads/consumes the body once). */
+export async function jsonErrorDetail(response) {
+  const ct = response.headers.get("content-type") || "";
+  if (!ct.includes("application/json")) return null;
+  try {
+    const j = await response.json();
+    if (typeof j.error_message === "string") return j.error_message;
+    if (typeof j.error === "string") return j.error;
+  } catch (_) {}
+  return null;
+}
+
 /** User-visible message when fetch fails (network, CORS, DNS, etc.) */
 export function networkErrorMessage(err) {
   if (err && typeof err === "object" && err.name === "TypeError") {

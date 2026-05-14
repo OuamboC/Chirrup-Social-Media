@@ -304,21 +304,27 @@ export default {
       },
       error: "",
       successMessage: "",
-      user: {
-        id: localStorage.getItem("user_id"),
-      },
       post_id: this.$route.params.id,
     };
   },
   computed: {
+    localUserId() {
+      return localStorage.getItem("user_id");
+    },
     userLikedPost() {
       if (!this.post.likes || !Array.isArray(this.post.likes)) {
         return false;
       }
-      return this.post.likes.some((like) => like.user_id == this.user.id);
+      const uid = this.localUserId;
+      return this.post.likes.some(
+        (like) => String(like.user_id) === String(uid)
+      );
     },
     isPostOwner() {
-      return this.post.author && this.post.author.user_id == this.user.id;
+      return (
+        this.post.author &&
+        String(this.post.author.user_id) === String(this.localUserId)
+      );
     },
   },
   methods: {

@@ -1,4 +1,10 @@
-import { apiUrl, networkErrorMessage } from "../config";
+import { apiUrl, networkErrorMessage, jsonErrorDetail } from "../config";
+
+/** Clear client auth when the server no longer has this user/session (e.g. DB reset on Render). */
+export function clearClientAuth() {
+  localStorage.removeItem("user_id");
+  localStorage.removeItem("session_token");
+}
 
 const postusers = (first_name, last_name, username, password) => {
   return fetch(apiUrl("/users"), {
@@ -13,14 +19,15 @@ const postusers = (first_name, last_name, username, password) => {
       password: password,
     }),
   })
-    .then((response) => {
+    .then(async (response) => {
       if (response.status === 200 || response.status === 201) {
         return response.json();
-      } else if (response.status === 400) {
-        throw "Bad request";
-      } else {
-        throw "Something went wrong ";
       }
+      const detail = await jsonErrorDetail(response);
+      if (response.status === 400) {
+        throw detail || "Bad request";
+      }
+      throw detail || "Something went wrong";
     })
     .then((rJson) => {
       console.log("📝 SignUp response:", rJson);
@@ -48,14 +55,15 @@ const login = (username, password) => {
       password: password,
     }),
   })
-    .then((response) => {
+    .then(async (response) => {
       if (response.status === 200) {
         return response.json();
-      } else if (response.status === 400) {
-        throw "Bad request";
-      } else {
-        throw "Something went wrong";
       }
+      const detail = await jsonErrorDetail(response);
+      if (response.status === 400) {
+        throw detail || "Bad request";
+      }
+      throw detail || "Something went wrong";
     })
     .then((rJson) => {
       console.log("🔐 Login response:", rJson);
@@ -80,16 +88,17 @@ const logout = () => {
       "X-Authorization": localStorage.getItem("session_token"),
     },
   })
-    .then((response) => {
+    .then(async (response) => {
       if (response.status === 200) {
-        localStorage.removeItem("user_id");
-        localStorage.removeItem("session_token");
+        clearClientAuth();
         return;
-      } else if (response.status === 401) {
-        throw "Not logged in";
-      } else {
-        throw "Something went wrong";
       }
+      if (response.status === 401) {
+        clearClientAuth();
+        throw "Not logged in";
+      }
+      const detail = await jsonErrorDetail(response);
+      throw detail || "Something went wrong";
     })
     .catch((error) => {
       console.log("Error:", error);

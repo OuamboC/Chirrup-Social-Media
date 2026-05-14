@@ -312,6 +312,7 @@
 import DisplayPosts from "../components/DisplayPosts.vue";
 import { postService } from "../../services/posts.service";
 import { authPostService } from "../../services/auth.post.service";
+import { clearClientAuth } from "../../services/user.service";
 
 export default {
   components: {
@@ -385,8 +386,17 @@ export default {
         })
         .catch((error) => {
           console.error("Error loading profile data:", error);
-          this.error =
-            typeof error === "string" ? error : "Failed to load profile data";
+          const msg =
+            typeof error === "string"
+              ? error
+              : "Failed to load profile data";
+          if (msg.includes("Not Found")) {
+            clearClientAuth();
+            this.loading = false;
+            this.$router.push("/login");
+            return;
+          }
+          this.error = msg;
           this.loading = false;
         });
     },

@@ -101,16 +101,17 @@ const logout_acc = (req, res) => {
     let token = req.get('X-Authorization');
     //Call the model function "removeToken" to log out the user
     users.removeToken(token, (err) => {
+       if (err === true) {
+        return res.sendStatus(401);
+       }
        if(err) {
-        console.log(err); //log console for debugging
+        console.log(err);
         return res.sendStatus(500);
        }
        if(!token) {
-           console.log(err); //log console for debugging
-        //if no session_token is found in the database , the server status must return a `401 NOT authorised error`
+           console.log(err);
         return res.sendStatus(401);
        }else {
-        //if no errors founds , the uer must be looged out and the server status must be 200 (OK)
         return res.sendStatus(200);
        }
     })

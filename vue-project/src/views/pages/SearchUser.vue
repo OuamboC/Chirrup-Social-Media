@@ -267,6 +267,8 @@ export default {
       search: [],
       loading: false,
       error: "",
+      /** Avoid double-fetch when we update the URL from handleSubmit/clearSearch. */
+      _syncingRoute: false,
     };
   },
   computed: {
@@ -277,32 +279,58 @@ export default {
 
       const query = this.searchQuery.toLowerCase();
       return this.search.filter((user) => {
-        const fullName = `${user.first_name} ${user.last_name}`.toLowerCase();
-        const username = user.username.toLowerCase();
+        const fullName = `${user.first_name || ""} ${user.last_name || ""}`
+          .toLowerCase()
+          .trim();
+        const username = (user.username || "").toLowerCase();
         return fullName.includes(query) || username.includes(query);
       });
     },
   },
   mounted() {
-    // Load all users on mount
-    this.loadAllUsers();
-
-    // Check if there's a query parameter
-    const urlQuery = this.$route.query.q;
+    const urlQuery =
+      typeof this.$route.query.q === "string"
+        ? this.$route.query.q
+        : Array.isArray(this.$route.query.q)
+          ? this.$route.query.q[0]
+          : "";
     if (urlQuery) {
       this.searchQuery = urlQuery;
       this.handleSubmit();
+    } else {
+      this.loadAllUsers();
     }
+  },
+  watch: {
+    "$route.query.q"(q) {
+      if (this._syncingRoute) return;
+      if (this.$route.path !== "/search") return;
+      const s =
+        typeof q === "string" ? q : Array.isArray(q) ? q[0] || "" : "";
+      this.searchQuery = s;
+      if (s.trim()) {
+        this.handleSubmit();
+      } else {
+        this.submitted = false;
+        this.error = "";
+        this.loadAllUsers();
+      }
+    },
   },
   methods: {
     loadAllUsers() {
+      this.loading = true;
+      this.error = "";
       postService
-        .getsearch()
+        .getsearch("")
         .then((results) => {
           this.search = results;
+          this.loading = false;
         })
         .catch((error) => {
           console.error("Error loading users:", error);
+          this.error = error || "Failed to load users";
+          this.loading = false;
         });
     },
     handleSubmit() {
@@ -310,11 +338,24 @@ export default {
       this.error = "";
       this.submitted = true;
 
+      const q = this.searchQuery.trim();
       postService
-        .getsearch()
+        .getsearch(q)
         .then((results) => {
           this.search = results;
           this.loading = false;
+          this._syncingRoute = true;
+          this.$router
+            .replace({
+              path: "/search",
+              query: q ? { q } : {},
+            })
+            .catch(() => {})
+            .finally(() => {
+              setTimeout(() => {
+                this._syncingRoute = false;
+              }, 0);
+            });
         })
         .catch((error) => {
           console.error("Error during search:", error);
@@ -326,6 +367,15 @@ export default {
       this.searchQuery = "";
       this.submitted = false;
       this.error = "";
+      this._syncingRoute = true;
+      this.$router
+        .replace({ path: "/search" })
+        .catch(() => {})
+        .finally(() => {
+          setTimeout(() => {
+            this._syncingRoute = false;
+          }, 0);
+        });
       this.loadAllUsers();
     },
     getInitial(username) {

@@ -1,4 +1,4 @@
-import { apiUrl, networkErrorMessage } from "../config";
+import { apiUrl, networkErrorMessage, jsonErrorDetail } from "../config";
 
 const postPosts = (text) => {
   return fetch(apiUrl("/posts"), {
@@ -11,16 +11,18 @@ const postPosts = (text) => {
       text: text,
     }),
   })
-    .then((response) => {
+    .then(async (response) => {
       if (response.status === 201) {
         return response.json();
-      } else if (response.status === 400) {
-        throw "Bad request";
-      } else if (response.status === 401) {
-        throw "Not logged in";
-      } else {
-        throw "Something went wrong";
       }
+      const detail = await jsonErrorDetail(response);
+      if (response.status === 400) {
+        throw detail || "Bad request";
+      }
+      if (response.status === 401) {
+        throw "Not logged in";
+      }
+      throw detail || "Something went wrong";
     })
     .then((rJson) => {
       console.log("✅ Post created:", rJson);
@@ -46,19 +48,24 @@ const updatePosts = (post_id, text) => {
       }),
     }
   )
-    .then((response) => {
+    .then(async (response) => {
       if (response.status === 200) {
-        //return response.json();
         return "OK";
-      } else if (response.status === 400) {
-        throw "Bad request";
-      } else if (response.status === 401) {
-        throw "Not logged in";
-      } else if (response.status === 403) {
-        throw "You can only edit your own post";
-      } else {
-        throw "Something went wrong";
       }
+      const detail = await jsonErrorDetail(response);
+      if (response.status === 400) {
+        throw detail || "Bad request";
+      }
+      if (response.status === 401) {
+        throw "Not logged in";
+      }
+      if (response.status === 403) {
+        throw "You can only edit your own post";
+      }
+      if (response.status === 404) {
+        throw "Post not found";
+      }
+      throw detail || "Something went wrong";
     })
     .then((rJson) => {
       return rJson;
@@ -79,17 +86,21 @@ const deletePosts = (post_id) => {
       },
     }
   )
-    .then((response) => {
+    .then(async (response) => {
       if (response.status === 200) {
-        //return response.json();
         return "OK";
-      } else if (response.status === 401) {
-        throw "Not logged in";
-      } else if (response.status === 403) {
-        throw "You can only delete your own post";
-      } else {
-        throw "Something went wrong";
       }
+      const detail = await jsonErrorDetail(response);
+      if (response.status === 401) {
+        throw "Not logged in";
+      }
+      if (response.status === 403) {
+        throw "You can only delete your own post";
+      }
+      if (response.status === 404) {
+        throw "Post not found";
+      }
+      throw detail || "Something went wrong";
     })
     .then((rJson) => {
       return rJson;
@@ -108,17 +119,18 @@ const likePosts = (post_id) => {
       "X-Authorization": localStorage.getItem("session_token"),
     },
   })
-    .then((response) => {
+    .then(async (response) => {
       if (response.status === 200) {
-        //return response.json();
         return "OK";
       } else if (response.status === 401) {
         throw "Not logged in";
       } else if (response.status === 403) {
         throw "You have already liked this post";
-      } else {
-        throw "Something went wrong";
+      } else if (response.status === 404) {
+        throw "Post not found";
       }
+      const detail = await jsonErrorDetail(response);
+      throw detail || "Something went wrong";
     })
     .then((rJson) => {
       return rJson;
@@ -137,17 +149,18 @@ const unlikePosts = (post_id) => {
       "X-Authorization": localStorage.getItem("session_token"),
     },
   })
-    .then((response) => {
+    .then(async (response) => {
       if (response.status === 200) {
-        //return response.json();
         return "OK";
       } else if (response.status === 401) {
         throw "Not logged in";
       } else if (response.status === 403) {
         throw "You can not unlike a post that you have not liked";
-      } else {
-        throw "Something went wrong";
+      } else if (response.status === 404) {
+        throw "Post not found";
       }
+      const detail = await jsonErrorDetail(response);
+      throw detail || "Something went wrong";
     })
     .then((rJson) => {
       return rJson;

@@ -30,6 +30,7 @@ const followUsers = (req, res) => {
     // Call the model function 'getIDFromToken' to convert the token into ID
     users.getIDFromToken(token, (err, follower_id) => {
         if (err) {
+            if (err === true) return res.sendStatus(401);
             console.log(err);
             return res.sendStatus(500);
         } else {
@@ -55,6 +56,7 @@ const unfollowUsers = (req, res) => {
     // Call the model function 'getIFFromToken' to convert the token into ID
     users.getIDFromToken(token, (err, follower_id) => {
         if (err) {
+            if (err === true) return res.sendStatus(401);
             console.log(err);
             return res.sendStatus(500);
         } else {
