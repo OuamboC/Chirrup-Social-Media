@@ -264,7 +264,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Canis Breal Ouambo**
 
-- 🌐 Portfolio: [Coming Soon]
+- 🌐 Portfolio: [Canis Breal Ouambo | Portfolio](https://www.canisouambo.tech/)
 - 💼 LinkedIn: [canis-breal-ouambo](https://www.linkedin.com/in/canis-breal-ouambo/)
 - 🐙 GitHub: [@OuamboC](https://github.com/OuamboC)
 
