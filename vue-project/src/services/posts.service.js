@@ -42,7 +42,12 @@ const getFeed = () => {
     throw "Something went wrong";
    })
    .then((resJson) => {
-       return resJson
+       if (!Array.isArray(resJson)) {
+         throw new Error(
+           "Unexpected feed response (expected a JSON array). The /api proxy may be forwarding to the wrong path on the server."
+         );
+       }
+       return resJson;
    })
    .catch((error) => {
     console.log("Err", error)

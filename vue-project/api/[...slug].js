@@ -5,13 +5,28 @@
  *
  * Vercel → Environment Variables:
  *   CHIRRUP_API_URL = https://your-api.onrender.com  (no trailing slash)
+ *
+ * Path: Vercel often omits `req.query.slug` for this catch-all; derive the upstream
+ * path from `req.url` (strip `/api`) or every request would hit Render `/` (health JSON).
  */
-
-function pathFromQuery(query) {
-  const slug = query.slug;
-  if (!slug) return "/";
-  if (Array.isArray(slug)) return "/" + slug.join("/");
-  return "/" + slug;
+function upstreamPathname(req) {
+  const slug = req.query && req.query.slug;
+  if (slug) {
+    if (Array.isArray(slug)) return "/" + slug.join("/");
+    return "/" + slug;
+  }
+  let path = "/";
+  try {
+    path = new URL(req.url, "https://placeholder.local").pathname;
+  } catch (_) {
+    path = ((req.url || "/").split("?")[0] || "/").trim() || "/";
+  }
+  if (path.startsWith("/api/")) {
+    const rest = path.slice(5).replace(/^\/+/, "");
+    return rest ? `/${rest}` : "/";
+  }
+  if (path === "/api") return "/";
+  return path || "/";
 }
 
 function bufferRequestBody(req) {
@@ -37,7 +52,7 @@ module.exports = async (req, res) => {
       );
   }
 
-  const pathname = pathFromQuery(req.query);
+  const pathname = upstreamPathname(req);
   let search = "";
   try {
     const u = new URL(req.url, `http://${req.headers.host || "localhost"}`);
